@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <string>
+#include <random>
 
 
 std::pair<int*, int> read_array(std::string input_s) {
@@ -32,24 +33,34 @@ std::pair<int*, int> read_array(std::string input_s) {
 }
 
 
+int partition(int* arr, int l, int r) {
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(l, r);
+
+    int pivot_idx = dis(gen), j = l;
+    int pivot = arr[pivot_idx];
+
+    std::swap(arr[pivot_idx], arr[r]);
+
+    for (int i = l; i < r; i++) {
+        if (arr[i] <= pivot) {
+            std::swap(arr[i], arr[j]);
+            j++;
+        }
+    }
+
+    std::swap(arr[r], arr[j]);
+
+    return j;
+}
+
+
 void qsort(int* arr, int l, int r) {
 
     if (l < r) {
-
-
-        int pivot_idx = l, j = l;
-
-        int pivot = arr[pivot_idx];
-        std::swap(arr[pivot_idx], arr[r]);
-
-        for (int i = l; i < r; i++) {
-            if (arr[i] <= pivot) {
-                std::swap(arr[i], arr[j]);
-                j++;
-            }
-        }
-
-        std::swap(arr[r], arr[j]);
+        int j = partition(arr, l, r);
 
         qsort(arr, l, j - 1);
         qsort(arr, j + 1, r);
@@ -61,19 +72,7 @@ void qsort(int* arr, int l, int r) {
 void qsort_tail_eliminated(int* arr, int l, int r) {
 
     while (l < r) {
-        int pivot_idx = l, j = l;
-
-        int pivot = arr[pivot_idx];
-        std::swap(arr[pivot_idx], arr[r]);
-
-        for (int i = l; i < r; i++) {
-            if (arr[i] <= pivot) {
-                std::swap(arr[i], arr[j]);
-                j++;
-            }
-        }
-
-        std::swap(arr[r], arr[j]);
+        int j = partition(arr, l ,r);
 
         qsort_tail_eliminated(arr, l, j - 1);
         l = j + 1;
@@ -85,18 +84,7 @@ void qsort_tail_eliminated(int* arr, int l, int r) {
 void qsort_faster(int* arr, int l, int r) {
 
     while (l < r) {
-        int pivot_idx = l, j = l;
-
-        int pivot = arr[pivot_idx];
-        std::swap(arr[pivot_idx], arr[r]);
-
-        for (int i = l; i < r; i++) {
-            if (arr[i] <= pivot) {
-                std::swap(arr[i], arr[j]);
-                j++;
-            }
-        }
-        std::swap(arr[r], arr[j]);
+        int j = partition(arr, l, r);
 
         if (j >= (l + r) / 2) {
             qsort_faster(arr, j + 1, r);
