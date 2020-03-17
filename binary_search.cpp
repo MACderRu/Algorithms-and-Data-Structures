@@ -4,7 +4,7 @@
 #include <vector>
 
 
-int get_pos(const std::vector<int> &numbers, int number) {
+int bin_search(const std::vector<int> &numbers, int number) {
     int l = 0, r = numbers.size();
     int m = -1;
 
@@ -37,7 +37,7 @@ int main() {
     while (query_number--> 0) {
         int number;
         std::cin >> number;
-        std::cout << get_pos(numbers, number) << ' ';
+        std::cout << bin_search(numbers, number) << ' ';
     }
 
     std::cout << std::endl;
