@@ -75,6 +75,27 @@ int random_select(int* arr, int l, int r, int k) {
     }
 }
 
+int random_select_nonrecursive(int* arr, int l, int r, int k) {
+
+    while (l <= r) {
+        if (l == r) {
+            if (k != 1) {
+                std::cout << "error!" << std::endl;
+            }
+            return arr[l];
+        }
+        int j = partition(arr, l, r);
+        if (j - l + 1 < k) {
+            k = k - (j - l + 1);
+            l = j + 1;
+        } else {
+            r = j;
+        }
+    }
+
+}
+
+
 int main() {
 
     std::string input_s;
@@ -87,7 +108,7 @@ int main() {
     int k;
     std::cin >> k;
 
-    int answer = random_select(arr, 0, N - 1, k);
+    int answer = random_select_nonrecursive(arr, 0, N - 1, k);
 
     std::cout << answer << std::endl;
 
